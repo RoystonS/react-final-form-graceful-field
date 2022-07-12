@@ -80,9 +80,13 @@ export default function useGracefulField(
         setTimeout(() => setLastFormValue(value), 0)
       }
       return raw && (field.meta.active || raw.parseError)
-        ? raw.rawValue
+        ? raw.rawValue === undefined
+          ? ''
+          : raw.rawValue
         : format
         ? format(value, name)
+        : value === undefined
+        ? ''
         : value
     },
     formatOnBlur: false,
@@ -122,27 +126,21 @@ export default function useGracefulField(
 
   const raw = getRaw(field.meta)
 
-  React.useEffect(
-    () => {
-      if (field.meta.active) return
-      if (raw && !raw.parseError) {
-        form.mutators.setFieldData(name, {
-          'react-final-form-graceful-field': null,
-        })
-      }
-    },
-    [field.meta.active]
-  )
-
-  React.useEffect(
-    () => {
-      if (field.meta.active) return
+  React.useEffect(() => {
+    if (field.meta.active) return
+    if (raw && !raw.parseError) {
       form.mutators.setFieldData(name, {
         'react-final-form-graceful-field': null,
       })
-    },
-    [lastFormValue]
-  )
+    }
+  }, [field.meta.active])
+
+  React.useEffect(() => {
+    if (field.meta.active) return
+    form.mutators.setFieldData(name, {
+      'react-final-form-graceful-field': null,
+    })
+  }, [lastFormValue])
 
   return field
 }
