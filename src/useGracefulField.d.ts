@@ -1,30 +1,23 @@
-import { FieldValidator, FieldSubscription, FieldState } from 'final-form'
-import { FieldRenderProps } from 'react-final-form'
-import * as React from 'react'
+import { FieldRenderProps, UseFieldConfig } from 'react-final-form'
 
-export type UseGracefulFieldProps = {
-  afterSubmit?: () => void
-  allowNull?: boolean
-  beforeSubmit?: () => void | false
-  component?: React.ComponentType<any> | 'input' | 'select' | 'textarea'
-  children?: ((props: any) => React.ReactNode) | React.ReactNode
-  render?: (props: any) => React.ReactNode
-  data?: Object
-  defaultValue?: any
-  format?: (value: any, name: string) => any
-  initialValue?: any
-  invalidValue?: any
-  isEqual?: (a: any, b: any) => boolean
-  multiple?: boolean
-  parse?: (value: any, name: string) => any
-  type?: string
-  validate?: FieldValidator<any>
-  validateFields?: string[]
-  value?: any
-  subscription?: FieldSubscription
-}
+export type UseGracefulFieldConfig<FieldValue, InputValue = any> = Omit<
+  UseFieldConfig<FieldValue, InputValue>,
+  'formatOnBlur'
+> & { invalidValue?: FieldValue }
 
-export default function useGracefulField(
+/**
+ * @deprecated use {@link UseGracefulFieldConfig}
+ */
+export type UseGracefulFieldProps<
+  FieldValue,
+  InputValue = any
+> = UseGracefulFieldConfig<FieldValue, InputValue>
+
+export function useGracefulField<
+  FieldValue = any,
+  T extends HTMLElement = HTMLElement,
+  InputValue = FieldValue
+>(
   name: string,
-  props: UseGracefulFieldProps
-): FieldRenderProps<any>
+  config?: UseGracefulFieldConfig<FieldValue, InputValue>
+): FieldRenderProps<FieldValue, T, InputValue>
