@@ -20,6 +20,7 @@ const parse = (value: ?string): ?number => {
 const mutators = { setFieldData }
 
 render(
+  // eslint-disable-next-line no-console
   <Form onSubmit={console.log} mutators={mutators}>
     {({ values, form, ...rest }) => (
       <div>
@@ -37,5 +38,6 @@ render(
       </div>
     )}
   </Form>,
+  // eslint-disable-next-line no-undef
   (document.getElementById('root'): any)
 )
