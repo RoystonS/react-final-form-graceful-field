@@ -13,7 +13,7 @@ export type UseGracefulFieldProps<
   InputValue = any
 > = UseGracefulFieldConfig<FieldValue, InputValue>
 
-export function useGracefulField<
+export default function useGracefulField<
   FieldValue = any,
   T extends HTMLElement = HTMLElement,
   InputValue = FieldValue
